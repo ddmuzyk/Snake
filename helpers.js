@@ -18,8 +18,6 @@ export const updatePlayer = (player, tile, direction, fruit) => {
     lastTile.element.classList.remove('player')
     lastTile.type = 'empty'
   }
-
-  console.log('update')
   
   const lastTile = player[player.length-1]
   
@@ -49,4 +47,19 @@ export const placeFruitRandomly = (blocks) => {
   const block = blocks[Math.floor(Math.random() * blocks.length)]
   block.type = "fruit"
   block.element.classList.add('fruit')
+}
+
+export const checkForDirectionChangePossibility = (player, board, direction) => {
+  const x = parseInt(player[0].x)
+  const y = parseInt(player[0].y)
+  switch (direction) {
+    case 'left':
+      return player.length === 1 || (player[1] !== board[y][x-1])
+    case 'right':
+      return player.length === 1 || (player[1] !== board[y][x+1])
+    case 'up':
+      return player.length === 1 || (board[y-1] && player[1] !== board[y-1][x])
+    case 'down':
+      return player.length === 1 || (board[y+1] && player[1] !== board[y+1][x])
+  }
 }

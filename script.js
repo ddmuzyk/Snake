@@ -1,4 +1,4 @@
-import { checkForLose, checkForFruit, updatePlayer, findEmptyBlocks, placeFruitRandomly } from "./helpers.js";
+import { checkForLose, checkForFruit, updatePlayer, findEmptyBlocks, placeFruitRandomly, checkForDirectionChangePossibility } from "./helpers.js";
 
 const boardEl = document.querySelector('.board');
 
@@ -109,22 +109,27 @@ createRows(numOfRows)
 createBoard(board)
 placePlayer(numOfRows)
 placeFruitRandomly(findEmptyBlocks(board))
+console.log(player[0])
+const x = parseInt(player[0].x)
+const y = parseInt(player[0].y)
+console.log(board[y][x] === player[0])
 
 // move(player, direction)
 
 window.addEventListener('keydown', (event) => {
+
   switch(event.key) {
     case 'ArrowUp':
-      if (direction !== 'down') direction = 'up';
+      if (checkForDirectionChangePossibility(player, board, 'up')) direction = 'up';
       break;
     case 'ArrowDown':
-      if (direction !== "up") direction = 'down';
+      if (checkForDirectionChangePossibility(player, board, 'down')) direction = 'down';
       break;
     case 'ArrowLeft':
-      if (direction !== 'right') direction = 'left';
+      if (checkForDirectionChangePossibility(player, board, 'left')) direction = 'left';
       break;
     case 'ArrowRight':
-      if (direction !== 'left') direction = 'right';
+      if (checkForDirectionChangePossibility(player, board, 'right')) direction = 'right';
       break;
     default:
       return; // exit this handler for other keys
