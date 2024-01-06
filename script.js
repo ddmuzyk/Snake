@@ -1,17 +1,23 @@
 import { checkForLose, checkForFruit, updatePlayer, findEmptyBlocks, placeFruitRandomly, checkForDirectionChangePossibility } from "./helpers.js";
 
 const boardEl = document.querySelector('.board');
+const scoreEl = document.querySelector('#score-val');
+const modalEl = document.querySelector('.modal');
+const modalBtn = document.querySelector('#play-again-btn');
+const modalScore = document.querySelector('#final-score');
+const highScoreEl = document.querySelector('#high-score');
 
 const numOfRows = 15;
 
-const player = []
+let player = []
 const board = []
 
 let direction = 'left'
 let gameOver = false
 let gameStarted = false
 
-let interval = 200
+let interval = 150
+let score = 0
 
 let gameInterval
 
@@ -63,58 +69,107 @@ const move = (player, direction) => {
       if (gameLost) {
         gameOver = true
         clearInterval(gameInterval)
+        showModal()
         return
       }
       const encounteredFruit = checkForFruit(tile)
       updatePlayer(player, tile, direction, encounteredFruit)
-      if (encounteredFruit) placeFruitRandomly(findEmptyBlocks(board))
+      if (encounteredFruit) {
+        score++ 
+        scoreEl.textContent = score
+        placeFruitRandomly(findEmptyBlocks(board))
+      }
     } else if (direction === 'right') {
       const tile = board[y][x+1]
       const gameLost = checkForLose(tile)
       if (gameLost) {
         gameOver = true
         clearInterval(gameInterval)
+        showModal()
         return
       }
       const encounteredFruit = checkForFruit(tile)
       updatePlayer(player, tile, direction, encounteredFruit)
-      if (encounteredFruit) placeFruitRandomly(findEmptyBlocks(board))
+      if (encounteredFruit) {
+        score++
+        scoreEl.textContent = score
+        placeFruitRandomly(findEmptyBlocks(board))
+      }
     } else if (direction === 'up') {
       const tile = board[y-1] && board[y-1][x]
       const gameLost = checkForLose(tile)
       if (gameLost) {
         gameOver = true
         clearInterval(gameInterval)
+        showModal()
         return
       }
       const encounteredFruit = checkForFruit(tile)
       updatePlayer(player, tile, direction, encounteredFruit)
-      if (encounteredFruit) placeFruitRandomly(findEmptyBlocks(board))
+      if (encounteredFruit) {
+        score++
+        scoreEl.textContent = score
+        placeFruitRandomly(findEmptyBlocks(board))
+      }
     } else if (direction === 'down') {
       const tile = board[y+1] && board[y+1][x]
       const gameLost = checkForLose(tile)
       if (gameLost) {
         gameOver = true
         clearInterval(gameInterval)
+        showModal()
         return
       }
       const encounteredFruit = checkForFruit(tile)
       updatePlayer(player, tile, direction, encounteredFruit)
-      if (encounteredFruit) placeFruitRandomly(findEmptyBlocks(board))
+      if (encounteredFruit) {
+        score++
+        scoreEl.textContent = score
+        placeFruitRandomly(findEmptyBlocks(board))
+      }
     }
   }
+}
+
+// Reset game
+
+const resetGame = () => {
+  board.forEach((row) => {
+    row.forEach((block) => {
+      block.element.classList.remove('player')
+      block.element.classList.remove('fruit')
+      block.type = 'empty'
+    })
+  })
+  player = []
+  placePlayer(numOfRows)
+  placeFruitRandomly(findEmptyBlocks(board))
+  gameOver = false
+  gameStarted = false
+  direction = 'left'
+  score = 0
+  scoreEl.textContent = 0
+  modalEl.style.display = 'none'
+}
+
+const showModal = () => {
+  modalScore.textContent = score
+  let highScore = localStorage.getItem('highScore')
+  if (!highScore) {
+    localStorage.setItem('highScore', score)
+    highScore = score
+  } else if (score >= highScore) {
+    localStorage.setItem('highScore', score)
+    highScore = score
+  }
+  highScoreEl.textContent = highScore
+  modalEl.style.display = 'flex'
 }
 
 createRows(numOfRows)
 createBoard(board)
 placePlayer(numOfRows)
 placeFruitRandomly(findEmptyBlocks(board))
-console.log(player[0])
-const x = parseInt(player[0].x)
-const y = parseInt(player[0].y)
-console.log(board[y][x] === player[0])
-
-// move(player, direction)
 
 window.addEventListener('keydown', (event) => {
 
@@ -132,7 +187,7 @@ window.addEventListener('keydown', (event) => {
       if (checkForDirectionChangePossibility(player, board, 'right')) direction = 'right';
       break;
     default:
-      return; // exit this handler for other keys
+      return;
   }
   if (!gameStarted) {
     gameInterval = setInterval(() => {
@@ -140,4 +195,8 @@ window.addEventListener('keydown', (event) => {
       gameStarted = true
     }, interval)
   }
+})
+
+modalBtn.addEventListener('click', () => {
+  resetGame()
 })

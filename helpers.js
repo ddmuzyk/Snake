@@ -13,15 +13,13 @@ export const checkForFruit = (tile) => {
 }
 
 export const updatePlayer = (player, tile, direction, fruit) => {
+  const lastTile = player[player.length-1]
+
   if (!fruit) {
-    const lastTile = player[player.length-1]
     lastTile.element.classList.remove('player')
     lastTile.type = 'empty'
   }
   
-  const lastTile = player[player.length-1]
-  
-
   for (let i = player.length-1; i > 0; i--) {
     player[i] = player[i-1];
   }
