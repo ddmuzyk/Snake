@@ -146,7 +146,7 @@ const resetGame = () => {
   placeFruitRandomly(findEmptyBlocks(board))
   gameOver = false
   gameStarted = false
-  direction = 'left'
+  direction = ''
   score = 0
   scoreEl.textContent = 0
   modalEl.style.display = 'none'
@@ -185,6 +185,9 @@ window.addEventListener('keydown', (event) => {
       break;
     case 'ArrowRight':
       if (checkForDirectionChangePossibility(player, board, 'right')) direction = 'right';
+      break;
+    case 'Enter':
+      if (gameOver && gameStarted) resetGame()
       break;
     default:
       return;

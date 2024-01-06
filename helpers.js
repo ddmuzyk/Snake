@@ -1,9 +1,7 @@
 export const checkForLose = (tile) => {
   if (!tile) {
-    console.log('Out of board')
     return true
   } else if (tile.type === 'player') {
-    console.log('You hit yourself!')
     return true
   }
 }
