@@ -1,5 +1,6 @@
 :root {
   --block-width: 40px;
+  --board-bg: rgb(221, 248, 198);
 }
 
 * {
@@ -16,20 +17,29 @@ body {
   justify-content: center;
   align-items: center;
   height: 100%;
+  background-color: whitesmoke;
 }
 
 .board {
   display: grid;
   grid-template-columns: repeat(15, 1fr);
+  border: 1px solid black;
+  background-color: var(--board-bg);
 }
 
 .block {
-  border: 1px solid black;
-  background-color: rgb(255, 255, 255);
+  /* border: 1px solid black; */
+  background-color: var(--board-bg);
   width: var(--block-width);
   height: var(--block-width);
 }
 
 .player {
-  background-color: rgb(46, 152, 167);
+  background-color: rgb(60, 167, 46);
+  border-radius: 10px;
+}
+
+.fruit {
+  background-image: url('./public/fruit.png');
+  background-size: cover;
 }
