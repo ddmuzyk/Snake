@@ -21,6 +21,7 @@ let score = 0
 
 let gameInterval
 
+
 const createRows = (numOfRows) => {
   for (let y = 0; y < numOfRows; y++) {
     const row = [];
@@ -136,8 +137,7 @@ const move = (player, direction) => {
 const resetGame = () => {
   board.forEach((row) => {
     row.forEach((block) => {
-      block.element.classList.remove('player')
-      block.element.classList.remove('fruit')
+      block.element.className = 'block';
       block.type = 'empty'
     })
   })
@@ -188,15 +188,15 @@ window.addEventListener('keydown', (event) => {
       break;
     case 'Enter':
       if (gameOver && gameStarted) resetGame()
-      break;
+      return
     default:
       return;
   }
   if (!gameStarted) {
     gameInterval = setInterval(() => {
       move(player, direction)
-      gameStarted = true
     }, interval)
+    gameStarted = true
   }
 })
 
