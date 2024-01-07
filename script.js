@@ -61,11 +61,12 @@ const placePlayer = (numOfRows) => {
 const move = (player, direction) => {
   if (!gameOver) {
     const head = player[0]
-    const x = parseInt(head.x)
-    const y = parseInt(head.y)
+    let x = parseInt(head.x)
+    let y = parseInt(head.y)
   
     if (direction === 'left') {
-      const tile = board[y][x-1]
+      x === 0 ? x = numOfRows - 1 : x--
+      const tile = board[y][x]
       const gameLost = checkForLose(tile)
       if (gameLost) {
         gameOver = true
@@ -81,7 +82,8 @@ const move = (player, direction) => {
         placeFruitRandomly(findEmptyBlocks(board))
       }
     } else if (direction === 'right') {
-      const tile = board[y][x+1]
+      x === numOfRows - 1 ? x = 0 : x++
+      const tile = board[y][x]
       const gameLost = checkForLose(tile)
       if (gameLost) {
         gameOver = true
@@ -97,7 +99,8 @@ const move = (player, direction) => {
         placeFruitRandomly(findEmptyBlocks(board))
       }
     } else if (direction === 'up') {
-      const tile = board[y-1] && board[y-1][x]
+      y === 0 ? y = numOfRows - 1 : y--
+      const tile = board[y][x]
       const gameLost = checkForLose(tile)
       if (gameLost) {
         gameOver = true
@@ -113,7 +116,8 @@ const move = (player, direction) => {
         placeFruitRandomly(findEmptyBlocks(board))
       }
     } else if (direction === 'down') {
-      const tile = board[y+1] && board[y+1][x]
+      y === numOfRows - 1 ? y = 0 : y++
+      const tile = board[y][x]
       const gameLost = checkForLose(tile)
       if (gameLost) {
         gameOver = true
@@ -175,16 +179,16 @@ window.addEventListener('keydown', (event) => {
 
   switch(event.key) {
     case 'ArrowUp':
-      if (checkForDirectionChangePossibility(player, board, 'up')) direction = 'up';
+      if (checkForDirectionChangePossibility(player, board, 'up', numOfRows)) direction = 'up';
       break;
     case 'ArrowDown':
-      if (checkForDirectionChangePossibility(player, board, 'down')) direction = 'down';
+      if (checkForDirectionChangePossibility(player, board, 'down', numOfRows)) direction = 'down';
       break;
     case 'ArrowLeft':
-      if (checkForDirectionChangePossibility(player, board, 'left')) direction = 'left';
+      if (checkForDirectionChangePossibility(player, board, 'left', numOfRows)) direction = 'left';
       break;
     case 'ArrowRight':
-      if (checkForDirectionChangePossibility(player, board, 'right')) direction = 'right';
+      if (checkForDirectionChangePossibility(player, board, 'right', numOfRows)) direction = 'right';
       break;
     case 'Enter':
       if (gameOver && gameStarted) resetGame()

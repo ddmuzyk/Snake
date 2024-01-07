@@ -45,17 +45,21 @@ export const placeFruitRandomly = (blocks) => {
   block.element.classList.add('fruit')
 }
 
-export const checkForDirectionChangePossibility = (player, board, direction) => {
-  const x = parseInt(player[0].x)
-  const y = parseInt(player[0].y)
+export const checkForDirectionChangePossibility = (player, board, direction, numOfRows) => {
+  let x = parseInt(player[0].x)
+  let y = parseInt(player[0].y)
   switch (direction) {
     case 'left':
-      return player.length === 1 || (player[1] !== board[y][x-1])
+      x === 0 ? x = numOfRows - 1 : x--
+      return player.length === 1 || (player[1] !== board[y][x])
     case 'right':
-      return player.length === 1 || (player[1] !== board[y][x+1])
+      x === numOfRows - 1 ? x = 0 : x++
+      return player.length === 1 || (player[1] !== board[y][x])
     case 'up':
-      return player.length === 1 || (board[y-1] && player[1] !== board[y-1][x])
+      y === 0 ? y = numOfRows - 1 : y--
+      return player.length === 1 || (player[1] !== board[y][x])
     case 'down':
-      return player.length === 1 || (board[y+1] && player[1] !== board[y+1][x])
+      y === numOfRows - 1 ? y = 0 : y++
+      return player.length === 1 || (player[1] !== board[y][x])
   }
 }
